@@ -45,10 +45,18 @@ public class DecodableDeserializer<T: Decodable>: Deserializer {
 
     public let acceptHeader = "application/json"
 
-    public required init() { }
+    public let decoder: JSONDecoder
+
+    public required init() {
+        decoder = JSONDecoder()
+    }
+
+    public init(withDecoder customDecoder: JSONDecoder) {
+        decoder = customDecoder
+    }
 
     public func deserialize(_ data: Data) throws -> T {
-        return try JSONDecoder().decode(T.self, from: data)
+        return try decoder.decode(T.self, from: data)
     }
 }
 
